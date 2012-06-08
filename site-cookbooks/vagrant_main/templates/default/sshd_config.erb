@@ -1,0 +1,70 @@
+# This file is managed by Chef.
+# Manual changes will be reverted.
+
+# What ports, IPs and protocols we listen for
+Port <%= node['sshd']['Port'] %>
+#ListenAddress <%= node['sshd']['ListenAddressV6'] %>
+#ListenAddress <%= node['sshd']['ListenAddressV4'] %>
+Protocol <%= node['sshd']['Protocol'] %>
+
+AddressFamily <%= node['sshd']['AddressFamily'] %>
+
+# HostKeys for protocol version 2
+HostKey <%= node['sshd']['HostKeyRSA'] %>
+HostKey <%= node['sshd']['HostKeyDSA'] %>
+
+#Privilege Separation is turned on for security
+UsePrivilegeSeparation <%= node['sshd']['UsePrivilegeSeparation'] %>
+
+# Lifetime and size of ephemeral version 1 server key
+KeyRegenerationInterval <%= node['sshd']['KeyRegenerationInterval'] %>
+ServerKeyBits <%= node['sshd']['ServerKeyBits'] %>
+
+# Logging
+SyslogFacility <%= node['sshd']['SyslogFacility'] %>
+LogLevel <%= node['sshd']['LogLevel'] %>
+
+# Authentication:
+LoginGraceTime <%= node['sshd']['LoginGraceTime'] %>
+PermitRootLogin <%= node['sshd']['PermitRootLogin'] %>
+StrictModes <%= node['sshd']['StrictModes'] %>
+MaxAuthTries <%= node['sshd']['MaxAuthTries'] %>
+
+RSAAuthentication yes
+PubkeyAuthentication <%= node['sshd']['PubkeyAuthentication'] %>
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts <%= node['sshd']['IgnoreRhosts'] %>
+# For this to work you will also need host keys in /etc/ssh_known_hosts
+RhostsRSAAuthentication <%= node['sshd']['RhostsRSAAuthentication'] %>
+# similar for protocol version 2
+HostbasedAuthentication <%= node['sshd']['HostbasedAuthentication'] %>
+# Change to yes to mistrust ~/.ssh/known_hosts for RhostsRSAAuthentication
+IgnoreUserKnownHosts <%= node['sshd']['IgnoreUserKnownHosts'] %>
+
+# To enable empty passwords, change to yes (NOT RECOMMENDED)
+PermitEmptyPasswords <%= node['sshd']['PermitEmptyPasswords'] %>
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication <%= node['sshd']['ChallengeResponseAuthentication'] %>
+
+# GSSAPI options
+GSSAPIAuthentication <%= node['sshd']['GSSAPIAuthentication'] %>
+GSSAPICleanupCredentials <%= node['sshd']['GSSAPICleanupCredentials'] %>
+
+PasswordAuthentication <%= node['sshd']['PasswordAuthentication'] %>
+
+X11Forwarding <%= node['sshd']['X11Forwarding'] %>
+X11DisplayOffset <%= node['sshd']['X11DisplayOffset'] %>
+PrintMotd <%= node['sshd']['PrintMotd'] %>
+PrintLastLog <%= node['sshd']['PrintLastLog'] %>
+TCPKeepAlive <%= node['sshd']['TCPKeepAlive'] %>
+
+# Allow client to pass locale environment variables
+AcceptEnv <%= node['sshd']['AcceptEnv'] %>
+
+Subsystem <%= node['sshd']['Subsystem'] %>
+
+UsePAM <%= node['sshd']['UsePAM'] %>
+UseDNS <%= node['sshd']['UseDNS'] %>

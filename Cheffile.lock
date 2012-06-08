@@ -1,0 +1,22 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apt (1.4.2)
+    build-essential (1.0.2)
+    dmg (1.0.0)
+    git (1.0.0)
+      dmg (>= 0.0.0)
+      runit (>= 0.0.0)
+      yum (>= 0.0.0)
+    openssh (0.8.0)
+    runit (0.15.0)
+    yum (0.6.0)
+    zsh (0.7.0)
+
+DEPENDENCIES
+  apt (>= 0)
+  build-essential (>= 0)
+  git (>= 0)
+  openssh (>= 0)
+  zsh (>= 0)
+

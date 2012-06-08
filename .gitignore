@@ -1,0 +1,9 @@
+# Ignore virtual machine image id
+.vagrant
+
+# Ignore user configuration file; contains sensitive data
+user-config.yml
+
+# Ignore librarian-chef cookbooks and cache folders
+cookbooks
+tmp
