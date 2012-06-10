@@ -31,9 +31,6 @@ Vagrant::Config.run do |config|
 
     # TODO: move this stuff into a databag separate from scripts
     chef.json = {
-      # run fast for testing; does not work for initial deploy
-      #:fast_test_mode => true,
-
       # Describe your user account
       :admins => [
         {
@@ -44,12 +41,16 @@ Vagrant::Config.run do |config|
           :full_name => "Patrick Wyatt",
           :shell => "/bin/zsh",
           :ssh_key => IO.read("C:/users/pat/.ssh/id_rsa.pub"),
-        }
+          :dotfiles => {
+            :repo => "git://github.com/webcoyote/my_dotfiles",
+            :files => ["bin", ".gemrc", ".rspec", ".rvmrc", ".zshrc"],
+          },
+        },
       ],
 
       # What packages would you like installed?
-      #:apt_packages => %w{tree xinit devilspie meld sqlitebrowser firefox},
-      :apt_packages => %w{tree},
+      :apt_packages => %w{tree xinit devilspie meld sqlitebrowser firefox},
+      #:apt_packages => %w{tree},
     }
 
   end
