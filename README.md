@@ -81,6 +81,20 @@ These files are the ones you'll want to edit to configure the system as you like
     :: ... several minutes from now: success!
 
 
+# Errors
+---
+
+* Mounting error:
+
+> The following SSH command responded with a non-zero exit status.
+    
+> Vagrant assumes that this means the command failed!
+    
+> mount -t vboxsf -o uid=`id -u vagrant`,gid=`id -g vagrant` v-csc-2 /tmp/vagrant-chef-1/chef-solo-2/cookbooks
+
+    SOLUTION: Run "librarian-chef update" on the Windows host system and then run "vagrant reload"
+
+
 # Git note
 ---
 On Windows, it is necessary to configure repositories to use the git protocol instead of https
