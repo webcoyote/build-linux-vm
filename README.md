@@ -1,14 +1,24 @@
 # Overview
 ---
-This project is designed to make it easy to build Linux virtual machines on Windows.
-It utilizes Vagrant, Chef and VirtualBox, but it's pretty dang easy if
-you follow the instructions below.
+This project is designed to make it easy to build Linux virtual machines on Windows
+for use as dev-environment servers or for use as a Linux desktop.
 
-I've written these instructions under the assumption that you're running vanilla Windows,
-so this should work even if you don't have any of the pre-requisites.
+I've written these instructions under the assumption that you're running vanilla
+Windows, so this should work even if you don't have any of the pre-requisites yet.
 
-If this doesn't work, I would very much appreciate your feedback so I can fix it for you :)
+This project is built with Vagrant, Chef, Librarian and VirtualBox.
 
+
+# Features
+---
+* Configures your user account with administrative access
+* SSH key-based login; remote access via passwords disabled
+* Password-less sudo (but you can change it if you like)
+* Password-less login to deskstop (if you choose to install Ubuntu-desktop)
+* Installs your "dotfiles" from a separate git repository
+* Installs the recipes and apt-get packages you specify
+* Separation of code and data; user-specific data stored in data-bags
+* Easy maintenance of chef recipes using librarian-chef
 
 # Installation and configuration
 ---
@@ -102,4 +112,11 @@ to avoid password prompts:
 
     git remote add origin git@github.com:webcoyote/build-linux-vm.git
 
+I mention this because, by default GitHub suggests HTTPS-based URLs instead of GIT-based, and
+it took me a while to figure out WTF I had to use a password when my SSH key was there!
 
+
+# Mea culpa
+---
+If this doesn't work it is probably my fault, I would very much appreciate your feedback
+so I can fix it for you :)
