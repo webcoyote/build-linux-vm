@@ -26,9 +26,9 @@ end.run_action(:run)
 require_recipe 'openssh'
 template "/etc/ssh/sshd_config" do
     source "sshd_config.erb"
-    owner "root"
-    group "root"
-    mode "0600"
+    owner 'root'
+    group 'root'
+    mode '0600'
     notifies :restart, "service[ssh]"
 end
 
@@ -69,6 +69,12 @@ begin
     end
 
     #==================================
+    # remove password-based login
+    execute "sudo passwd -d #{login}" do
+      action :nothing
+    end.run_action(:run)
+
+    #==================================
     # ssh: configure authorized_keys file and create rsa key
     directory "/home/#{login}/.ssh" do
       owner login
@@ -80,12 +86,12 @@ begin
     file "/home/#{login}/.ssh/authorized_keys" do
       owner login
       group login
-      mode "0600"
+      mode '0600'
       action :create
       content admin['authorized_keys']
     end
 
-    execute "generate ssh skys for #{login}." do
+    execute "generate ssh keys for #{login}" do
       user login
       creates "/home/#{login}/.ssh/id_rsa.pub"
       command "ssh-keygen -t rsa -q -f /home/#{login}/.ssh/id_rsa -P \"\""
@@ -137,11 +143,34 @@ begin
   end
    
   #==================================
-  # Create an "admins" group on the system
-  # You might use this group in the /etc/sudoers file
-  # to provide sudo access to the admins
-  group "admins" do
-    gid 999
+  # Update admin group. Important: make sure vagrant user is still an admin!
+  admins << "vagrant"
+  group "admin" do
     members admins
   end
+
+  #============================================================================
+  # Enable first user to auto-login in XWindows (if ubuntu-desktop installed)
+  directory "/etc/gdm" do
+    owner 'root'
+    group 'root'
+    mode '0755'
+  end
+
+  file "/etc/gdm/custom.conf" do
+    owner 'root'
+    group 'root'
+    mode '0644'
+    action :create
+    content <<-END.gsub(/^ {4}/, '')
+      [daemon]
+      TimedLoginEnable=true
+      AutomaticLoginEnable=true
+      TimedLogin=#{admins[0]}
+      AutomaticLogin=#{admins[0]}
+      TimedLoginDelay=0
+      DefaultSession=gnome
+    END
+  end
+
 end

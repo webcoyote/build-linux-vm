@@ -27,6 +27,10 @@ Vagrant::Config.run do |config|
   Dir::mkdir("/vm_data") unless FileTest::directory?("/vm_data")
   config.vm.share_folder "vm_data", "/vm_data", "/vm_data"
 
+  # Make the box a little more powerful
+  config.vm.customize ["modifyvm", :id, "--memory", 1536]
+  config.vm.customize ["modifyvm", :id, "--cpus", 2]
+
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = ["./site-cookbooks", "./cookbooks"]
     chef.data_bags_path = "./data_bags"

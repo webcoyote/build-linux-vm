@@ -12,6 +12,7 @@
         "repo": "git://github.com/webcoyote/my_dotfiles",
         "files": [
             "bin",
+            ".devilspie",
             ".gemrc",
             ".rspec",
             ".rvmrc",
