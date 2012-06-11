@@ -3,8 +3,13 @@
 
 site 'http://community.opscode.com/api/v1'
 
-cookbook 'build-essential'
-cookbook 'apt'
-cookbook 'git'
-cookbook 'openssh'
-cookbook 'zsh'
+# No touchy: required to configure the computer for password-less login
+  cookbook 'openssh'
+
+
+# Select the cookbooks you'd like to install. Each cookbook listed here
+# also needs to be listed in data_bags/install/install.json
+  cookbook 'build-essential'
+  cookbook 'apt'
+  cookbook 'git'
+  cookbook 'zsh'

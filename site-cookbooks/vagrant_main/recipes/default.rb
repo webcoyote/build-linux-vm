@@ -6,6 +6,7 @@
 # http://wiki.opscode.com/display/chef/Resources
 
 
+#============================================================================
 # Disable password-based login to the vagrant account to reduce attack surface
 # This is important because everyone knows the password to the vagrant account
 execute "sudo passwd -d vagrant" do
@@ -13,18 +14,14 @@ execute "sudo passwd -d vagrant" do
 end.run_action(:run)
 
 
+#============================================================================
 # Run the most recent version of apt-get which may be required by some apt packages
 execute "apt-get update -y" do
   action :nothing
 end.run_action(:run)
 
 
-# Install chef cookbooks desired by user
-%w{build-essential apt git zsh}.each do |pkg|
-  require_recipe pkg
-end
-
-
+#============================================================================
 # Configure sshd to turn off password-based login
 require_recipe 'openssh'
 template "/etc/ssh/sshd_config" do
@@ -36,10 +33,17 @@ template "/etc/ssh/sshd_config" do
 end
 
 
-# Install apt packages desired by user
-node[:apt_packages].each do |pkg|
-  apt_package pkg do
-    action :install
+#============================================================================
+# Install cookbooks and packages requested by user
+begin
+  install = Chef::DataBag.load("install").first[1]
+  install["recipes"].each do |recipe|
+    require_recipe recipe
+  end
+  install["apt-packages"].each do |pkg|
+      apt_package pkg do
+      action :install
+    end
   end
 end
 
@@ -48,13 +52,13 @@ end
 # Create admin accounts
 begin
   admins = []
-   
-  # search for all items in the 'admins' data bag and loop over them
-  node[:admins].each do |admin|
+  Chef::DataBag.load("admins").each do |login, admin|
+    #==================================
+    # add user to admins group
+    admins << login
 
     #==================================
     # create user
-    login = admin["id"]
     user(login) do
       uid       admin['uid']
       gid       admin['gid']
@@ -63,10 +67,9 @@ begin
       home      "/home/#{login}"
       supports  :manage_home => true
     end
-    admins << login
 
     #==================================
-    # ssh keys
+    # ssh: configure authorized_keys file and create rsa key
     directory "/home/#{login}/.ssh" do
       owner login
       group login
@@ -79,7 +82,7 @@ begin
       group login
       mode "0600"
       action :create
-      content admin['ssh_key']
+      content admin['authorized_keys']
     end
 
     execute "generate ssh skys for #{login}." do
@@ -99,7 +102,7 @@ begin
     end
 
     #==================================
-    # get dotfiles
+    # get user dotfiles from git
     log "[dotfiles] Uploading dotfiles for #{login} from #{admin['dotfiles']['repo']} to /home/#{login}/.my_dotfiles" do
       level :info
     end
@@ -133,6 +136,7 @@ begin
 
   end
    
+  #==================================
   # Create an "admins" group on the system
   # You might use this group in the /etc/sudoers file
   # to provide sudo access to the admins
@@ -141,5 +145,3 @@ begin
     members admins
   end
 end
-
-

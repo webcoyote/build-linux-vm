@@ -23,35 +23,13 @@ Vagrant::Config.run do |config|
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
+  # Create the share directory on the host first
+  Dir::mkdir("/vm_data")
   config.vm.share_folder "vm_data", "/vm_data", "/vm_data"
 
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = ["site-cookbooks", "cookbooks"]
+    chef.cookbooks_path = ["./site-cookbooks", "./cookbooks"]
+    chef.data_bags_path = "./data_bags"
     chef.add_recipe 'vagrant_main'
-
-    # TODO: move this stuff into a databag separate from scripts
-    chef.json = {
-      # Describe your user account
-      :admins => [
-        {
-          :id => "pat",
-          :groups => [ "admin" ],
-          :uid => 7777,
-          :local_files => true,
-          :full_name => "Patrick Wyatt",
-          :shell => "/bin/zsh",
-          :ssh_key => IO.read("C:/users/pat/.ssh/id_rsa.pub"),
-          :dotfiles => {
-            :repo => "git://github.com/webcoyote/my_dotfiles",
-            :files => ["bin", ".gemrc", ".rspec", ".rvmrc", ".zshrc"],
-          },
-        },
-      ],
-
-      # What packages would you like installed?
-      :apt_packages => %w{tree xinit devilspie meld sqlitebrowser firefox},
-      #:apt_packages => %w{tree},
-    }
-
   end
 end

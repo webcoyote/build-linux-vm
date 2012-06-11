@@ -1,0 +1,16 @@
+{
+  "recipes": [
+    "apt",
+    "build-essential",
+    "git",
+    "zsh"
+  ],
+  "apt-packages": [
+    "tree",
+    "xinit",
+    "devilspie",
+    "meld",
+    "sqlitebrowser",
+    "firefox"
+  ]
+}
