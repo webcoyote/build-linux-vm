@@ -6,6 +6,7 @@
     "zsh"
   ],
   "apt-packages": [
+    "curl",
     "tree",
     "xinit",
     "devilspie",
