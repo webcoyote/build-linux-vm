@@ -7,14 +7,6 @@
 
 
 #============================================================================
-# Disable password-based login to the vagrant account to reduce attack surface
-# This is important because everyone knows the password to the vagrant account
-execute "sudo passwd -d vagrant" do
-  action :nothing
-end.run_action(:run)
-
-
-#============================================================================
 # Run the most recent version of apt-get which may be required by some apt packages
 execute "apt-get update -y" do
   action :nothing
@@ -67,12 +59,6 @@ begin
       home      "/home/#{login}"
       supports  :manage_home => true
     end
-
-    #==================================
-    # remove password-based login
-    execute "sudo passwd -d #{login}" do
-      action :nothing
-    end.run_action(:run)
 
     #==================================
     # ssh: configure authorized_keys file and create rsa key
@@ -147,6 +133,14 @@ begin
   admins << "vagrant"
   group "admin" do
     members admins
+  end
+
+  #==================================
+  # Disable password-based login to reduce attack surface
+  admins.each do |login|
+    execute "Remove password for #{login}" do
+      command "sudo passwd -d #{login}"
+    end
   end
 
   #============================================================================
