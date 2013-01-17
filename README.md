@@ -1,3 +1,16 @@
+
+
+# DEPRECATED
+
+This repository is out-of-date; Chef and Vagrant change pretty fast.
+I have a NEW repository here: https://github.com/webcoyote/linux-vm
+
+
+
+
+
+
+
 # Overview of build-linux-vm
 
 This project is designed to make it easy to build Linux virtual machines on
